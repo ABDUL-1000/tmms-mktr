@@ -1,4 +1,4 @@
-import { GlassWaterIcon, HomeIcon, TruckIcon } from "lucide-react";
+import { HomeIcon, TruckIcon } from "lucide-react";
 import Link from "next/link";
 import { FaTint } from "react-icons/fa";
 

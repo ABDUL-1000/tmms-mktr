@@ -1,4 +1,4 @@
-import { stat } from 'fs';
+
 import { FaShoppingCart, FaUserFriends, FaCreditCard, FaShippingFast, FaWater } from 'react-icons/fa';
 
 
