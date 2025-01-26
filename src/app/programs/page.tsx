@@ -2,7 +2,7 @@
 import MarketerBanner from "@/components/MarketerBanner";
 import Link from "next/link";
 import { useState } from "react";
-import { FaBook, FaEllipsisV, FaTint } from "react-icons/fa";
+import { FaBook, FaEllipsisV} from "react-icons/fa";
 
 export default function Programs() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
