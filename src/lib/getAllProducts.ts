@@ -3,7 +3,9 @@ import axios from 'axios';
 export interface Product {
   id: string;
   name: string;
-  refinery: string;
+  refinery: {
+    status: string;
+  }
   amountCostNGN: number;
   amountCostUSD: number;
   lastUpdated: string;

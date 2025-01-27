@@ -64,7 +64,7 @@ interface ProductPageProps {
             <tr key={product.id} className="bg-white border-b hover:bg-gray-50">
             
               <td className="px-4 py-2">{product.name}</td>
-              {/* <td className="px-4 py-2">{product.refinery.status}</td> */}
+              <td className="px-4 py-2">{product.refinery.status}</td>
               <td className="px-4 py-2">{product.amountCostNGN}</td>
               <td className="px-4 py-2">{product.amountCostUSD}</td>
               {/* <td className="px-4 py-2">{product.updated_at}</td> */}
