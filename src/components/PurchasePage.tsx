@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Purchase {
   id: number;
@@ -14,6 +15,13 @@ interface Purchase {
 }
 
 const PurchasePage = () => {
+    const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Retrieve values from query parameters
+  const product = searchParams.get("product") || "N/A";
+  const liters = searchParams.get("liters") || "0";
+  const total = searchParams.get("total") || "0";
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [filteredPurchases, setFilteredPurchases] = useState<Purchase[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -65,14 +73,7 @@ const PurchasePage = () => {
     );
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
+ 
   return (
     <div className="overflow-x-auto py-4">
       <h2 className="text-2xl font-semibold mb-4">Your Purchases</h2>
@@ -112,24 +113,17 @@ const PurchasePage = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredPurchases.length > 0 ? (
-            filteredPurchases.map((purchase) => (
-              <tr key={purchase.id} className="bg-white border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{purchase.product_name}</td>
-                <td className="px-4 py-2">{purchase.refinery_name}</td>
-                <td className="px-4 py-2">{purchase.liters}</td>
-                <td className="px-4 py-2">{purchase.amount}</td>
-                <td className="px-4 py-2">{purchase.status}</td>
-                <td className="px-4 py-2">{new Date(purchase.purchased_at).toLocaleString()}</td>
+         
+              <tr className="bg-white border-b hover:bg-gray-50">
+                <td className="px-4 py-2">{product}</td>
+                <td className="px-4 py-2">{product}</td>
+                <td className="px-4 py-2">{liters}</td>
+                <td className="px-4 py-2">{total}</td>
+                <td className="px-4 py-2">{liters}</td>
+                <td className="px-4 py-2">{new Date().toLocaleString()}</td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={6} className="px-4 py-2 text-center">
-                No purchases found.
-              </td>
-            </tr>
-          )}
+        
+         
         </tbody>
       </table>
     </div>

@@ -1,8 +1,11 @@
 import Navigation from "@/components/Navbar";
 import PurchasePage from "@/components/PurchasePage";
 import Sidebar from "@/components/SideBar";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const page = () => {
+  
+
   return (
     <div>
       <Navigation />
