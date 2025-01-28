@@ -1,6 +1,6 @@
 import { HomeIcon, TruckIcon } from "lucide-react";
 import Link from "next/link";
-import { FaTint } from "react-icons/fa";
+import { FaShoppingCart, FaTint, FaUser } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -31,8 +31,9 @@ const Sidebar = () => {
           <li>
             <Link
               href="/purchase"
-              className="block py-2 px-3 rounded hover:bg-gray-700"
+              className="flex py-2 px-3 rounded hover:bg-gray-700"
             >
+              <FaShoppingCart className="mr-2 w-6 h-6"/>
               Purchase (ATC)
             </Link>
           </li>
@@ -64,8 +65,9 @@ const Sidebar = () => {
           <li>
             <Link
               href="/profile"
-              className="block py-2 px-3 rounded hover:bg-gray-700"
+              className="flex py-2 px-3 rounded hover:bg-gray-700"
             >
+              <FaUser className="mr-2 w-5 h-5"/>
               Profile
             </Link>
           </li>
@@ -74,6 +76,7 @@ const Sidebar = () => {
               href="/settings"
               className="block py-2 px-3 rounded hover:bg-gray-700"
             >
+              
               Settings
             </Link>
           </li>

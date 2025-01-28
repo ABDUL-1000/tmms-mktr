@@ -1,16 +1,30 @@
 import axios from 'axios';
 
 export interface Product {
-  id: string;
+  id: number;
   name: string;
+  pricePerLiter: any;
   refinery: {
+    user:{
+      name:string,
+      email:string,
+      
+    }
+   
     status: string;
+    updated_at: number;
+  };
+  product_type:{
+    name:string,
+   
   }
   amountCostNGN: number;
   amountCostUSD: number;
   lastUpdated: string;
   status: string;
   price: string;
+  updated_at: string;
+  
 }
 
 export const getAllProducts = async (): Promise<Product[]> => {
