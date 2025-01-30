@@ -23,7 +23,7 @@ export interface Product {
   lastUpdated: string;
   status: string;
   price: string;
-  updated_at: string;
+  updated_at: number;
   
 }
 

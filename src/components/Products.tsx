@@ -1,9 +1,8 @@
-"use client";
-
-import { getAllProducts, Product } from "@/lib/getAllProducts";
+'use client';
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { getAllProducts, Product } from "@/lib/getAllProducts";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const ProductPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,6 +16,13 @@ const ProductPage = () => {
   const [totalUSD, setTotalUSD] = useState<number>(0);
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const router = useRouter();
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "NGN",
+    }).format(amount);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +46,7 @@ const ProductPage = () => {
   const handleModalOpen = (product: Product, type: "view" | "purchase") => {
     setSelectedProduct(product);
     setModalType(type);
-    setLiters(0); // Reset liters input for purchase
+    setLiters(0);
     setTotalNaira(0);
     setTotalUSD(0);
     setShowModal(true);
@@ -51,9 +57,9 @@ const ProductPage = () => {
     setLiters(liters);
 
     if (selectedProduct) {
-      const pricePerLiter = Number(selectedProduct.price); // Ensure price is a number
+      const pricePerLiter = Number(selectedProduct.price);
       setTotalNaira(pricePerLiter * liters);
-      setTotalUSD((pricePerLiter * liters) / 750); // Assuming conversion rate 1 USD = 750 NGN
+      setTotalUSD((pricePerLiter * liters) / 750);
     }
   };
 
@@ -62,21 +68,20 @@ const ProductPage = () => {
       alert("Please enter a valid number of liters.");
       return;
     }
-  
+
     const options = {
       method: "POST",
       url: "https://tms.sdssn.org/api/marketers/purchases",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       data: { product_id: selectedProduct.id, liters },
     };
-  
+
     try {
-      await axios.request(options);
+      const response = await axios.request(options);
       setShowNotification(true);
       setShowModal(false);
-  
-      // Redirect to the purchase page
-      router.push(`/purchase-success?product=${selectedProduct.id}&liters=${liters}&total=${totalNaira}`);
+      console.log(response.data);
+      router.push(`/purchase?product=${selectedProduct.id}&liters=${liters}&total=${totalNaira}`);
     } catch (error) {
       console.error(error);
       alert("An error occurred while processing your purchase. Please try again.");
@@ -111,21 +116,11 @@ const ProductPage = () => {
               <td className="px-4 py-2">{product.product_type.name}</td>
               <td className="px-4 py-2">{product.refinery.user.name}</td>
               <td className="px-4 py-2">{product.price}</td>
-              <td className="px-4 py-2">{product.updated_at}</td>
+              <td className="px-4 py-2">{new Date(product.updated_at).toDateString()}</td>
               <td className="px-4 py-2">{product.status}</td>
               <td className="px-4 py-2">
-                <button
-                  className="text-blue-500 hover:underline mr-2"
-                  onClick={() => handleModalOpen(product, "view")}
-                >
-                  View
-                </button>
-                <button
-                  className="text-green-500 hover:underline"
-                  onClick={() => handleModalOpen(product, "purchase")}
-                >
-                  Purchase
-                </button>
+                <button className="text-blue-500 hover:underline mr-2" onClick={() => handleModalOpen(product, "view")}>View</button>
+                <button className="text-green-500 hover:underline" onClick={() => handleModalOpen(product, "purchase")}>Purchase</button>
               </td>
             </tr>
           ))}
@@ -136,72 +131,27 @@ const ProductPage = () => {
       {showModal && selectedProduct && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6">
-            <h3 className="text-lg font-semibold mb-2">
-              {modalType === "view" ? "Product Details" : "Confirm Purchase"}
-            </h3>
-            <p>
-              Product: <span className="text-blue-500 font-medium">{selectedProduct.product_type.name}</span>
-            </p>
+            <h3 className="text-lg font-semibold mb-2">{modalType === "view" ? "Product Details" : "Confirm Purchase"}</h3>
+            <p>Product: <span className="text-blue-500 font-medium">{selectedProduct.product_type.name}</span></p>
             <p>Refinery: {selectedProduct.refinery.user.name}</p>
-            <p>Price per liter: {selectedProduct.price} NGN</p>
+            <p>Price per liter: {selectedProduct.price}</p>
             <p>Status: {selectedProduct.status}</p>
 
             {modalType === "purchase" && (
               <>
-                <input
-                  type="number"
-                  value={liters}
-                  onChange={(e) => handleLitersChange(e.target.value)}
-                  placeholder="Enter liters"
-                  className="w-full mt-4 px-3 py-2 border rounded-md"
-                />
+                <input type="number" value={liters} onChange={(e) => handleLitersChange(e.target.value)} placeholder="Enter liters" className="w-full mt-4 px-3 py-2 border rounded-md" />
                 <div className="mt-4">
-                  <p>Total (NGN): <span className="font-medium">{totalNaira.toFixed(2)}</span></p>
-                  <p>Total (USD): <span className="font-medium">{totalUSD.toFixed(2)}</span></p>
+                  <p>Total (NGN): {formatCurrency(totalNaira)}</p>
+                  <p>Total (USD): ${totalUSD.toFixed(2)}</p>
                 </div>
+                <button onClick={handleConfirmPurchase} className="mt-4 w-full bg-green-500 text-white py-2 rounded-md">Confirm Purchase</button>
               </>
             )}
 
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded-lg text-sm hover:bg-gray-400"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </button>
-              {modalType === "purchase" && (
-                <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
-                  onClick={handleConfirmPurchase}
-                >
-                  Confirm
-                </button>
-              )}
-            </div>
+            <button onClick={() => setShowModal(false)} className="mt-4 text-gray-600 hover:underline">Close</button>
           </div>
         </div>
       )}
-
-      {/* Notification */}
-      {showNotification && (
-        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-transform transform animate-slide-in">
-          You have successfully purchased the product!
-        </div>
-      )}
-
-      <style jsx>{`
-        @keyframes slide-in {
-          0% {
-            transform: translateX(100%);
-          }
-          100% {
-            transform: translateX(0);
-          }
-        }
-        .animate-slide-in {
-          animation: slide-in 0.5s ease-out;
-        }
-      `}</style>
     </div>
   );
 };

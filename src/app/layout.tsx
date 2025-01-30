@@ -26,12 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning className="bg-gray-300">
       <body>
         <ProtectedRoute>
      
         <main>
-  <div className="">
+  <div >
             <div className="">
               <div className="">
               {children}

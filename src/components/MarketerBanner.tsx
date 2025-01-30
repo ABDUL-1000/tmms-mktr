@@ -2,7 +2,7 @@ import { FaTruck } from "react-icons/fa";
 
 const MarketerBanner = () => {
   return (
-    <div className="bg-white shadow-lg rounded-lg flex items-center p-2 w-full dark:bg-slate-800 dark:text-gray-100">
+    <div className="bg-white shadow-md rounded-lg flex items-center p-2 w-full dark:bg-slate-800 dark:text-gray-100">
       {/* Icon Section */}
       <div className="md:p-2">
         <FaTruck className="bg-[#0828b9] p-2 rounded-full md:text-2xl text-white" />
