@@ -28,7 +28,7 @@ interface TrucksTableModalProps {
   purchase_id: number | null; // Add purchase_id to the props
 }
 
-export const TrucksTableModal: React.FC<TrucksTableModalProps> = ({
+const TrucksTableModal: React.FC<TrucksTableModalProps> = ({
   isOpen,
   onClose,
   selectedProgramId,
@@ -211,5 +211,5 @@ export const TrucksTableModal: React.FC<TrucksTableModalProps> = ({
     </div>
   );
 };
-
+export default TrucksTableModal
 
