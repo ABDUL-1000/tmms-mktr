@@ -4,7 +4,8 @@ import axios from "axios";
 import { MoreVerticalIcon } from "lucide-react";
 
 import useStore from "@/lib/useStore";
-import TrucksTableModal from "@/app/truckStore/page";
+import { TrucksTableModal } from "@/app/truckStore/page";
+
 
 const ProgramListPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
