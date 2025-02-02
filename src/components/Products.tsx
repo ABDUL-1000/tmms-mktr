@@ -88,6 +88,19 @@ const ProductPage = () => {
     }
   };
 
+  const getStatusClass = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "active":
+        return "bg-green-500 text-white rounded-full px-3 py-1 text-xs";
+      case "pending":
+        return "bg-yellow-500 text-white rounded-full px-3 py-1 text-xs";
+      case "regect":
+        return "bg-red-500 text-white rounded-full px-3 py-1 text-xs";
+      default:
+        return "bg-gray-400 text-white rounded-full px-3 py-1 text-xs";
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -117,10 +130,18 @@ const ProductPage = () => {
               <td className="px-4 py-2">{product.refinery.user.name}</td>
               <td className="px-4 py-2">{product.price}</td>
               <td className="px-4 py-2">{new Date(product.updated_at).toDateString()}</td>
-              <td className="px-4 py-2">{product.status}</td>
               <td className="px-4 py-2">
-                <button className="text-blue-500 hover:underline mr-2" onClick={() => handleModalOpen(product, "view")}>View</button>
-                <button className="text-green-500 hover:underline" onClick={() => handleModalOpen(product, "purchase")}>Purchase</button>
+                <span className={getStatusClass(product.status)}>{product.status}</span>
+              </td>
+              <td className="px-4 py-2">
+                <select
+                  className="border rounded px-2 py-1"
+                  onChange={(e) => handleModalOpen(product, e.target.value as "view" | "purchase")}
+                >
+                  <option value="">Select Action</option>
+                  <option value="view">View</option>
+                  <option value="purchase">Purchase</option>
+                </select>
               </td>
             </tr>
           ))}

@@ -1,10 +1,10 @@
 import Navigation from '@/components/Navbar'
-import ProgramListPage from '@/components/Program'
-
+import ProgramTrucksTable from '@/components/ProgramTruck'
 import Sidebar from '@/components/SideBar'
 import React from 'react'
 
 const page = () => {
+   
   return (
     <div>
       <Navigation />
@@ -14,12 +14,11 @@ const page = () => {
             <Sidebar />
           </div>
           <div className="lg:col-span-9 min-h-screen">
-          <ProgramListPage/>
+          <ProgramTrucksTable/>
           </div>
         </div>
       </div>
     </div>
-  
   )
 }
 

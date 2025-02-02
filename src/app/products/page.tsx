@@ -1,4 +1,5 @@
 
+import Navigation from '@/components/Navbar'
 import ProductPage from '@/components/Products'
 import Sidebar from '@/components/SideBar'
 import React from 'react'
@@ -7,6 +8,7 @@ import React from 'react'
 const page = () => {
   return (
     <div >
+       <Navigation/>
        <div className="max-w-7xl mx-auto px-4 ">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 ">
               <div className="hidden lg:block lg:col-span-3"><Sidebar/></div>

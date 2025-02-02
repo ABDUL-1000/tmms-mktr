@@ -57,7 +57,7 @@ const Sidebar = () => {
           <li>
             <Link 
             
-              href="/customer/assignprogram"
+              href="/programTruck"
               className="flex py-2 px-3  rounded hover:bg-gray-100"
             > <TruckIcon className="mr-2 w-6 h-6 " />
               Approved Programs

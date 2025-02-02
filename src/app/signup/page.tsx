@@ -51,17 +51,18 @@ const SignUpForm = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
+  
     try {
       const result = await signupMarketer(formData);
-      const { password, password_confirmation, ...safeFormData } = formData; 
-      // localStorage.setItem('signupFormData', JSON.stringify(safeFormData));
-
+      
       if (result.success) {
-        setSuccess(result.message || 'Signup successful!');
-        setTimeout(() => router.push('/login'), 2000); // Redirect to success page
+        const { password, password_confirmation, ...safeFormData } = formData; 
+        localStorage.setItem("signupFormData", JSON.stringify(safeFormData)); // Store marketer details
+  
+        setSuccess(result.message || "Signup successful!");
+        setTimeout(() => router.push("/dashboard"), 2000); // Redirect after signup
       } else {
-        setError('Signup failed. Please try again.');
+        setError("Signup failed. Please try again.");
       }
     } catch (err: any) {
       setError(err.message);

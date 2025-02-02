@@ -6,6 +6,8 @@ interface UploadReceiptModalProps {
   isOpen: boolean;
   onClose: () => void;
   purchasePaymentProofId: string | number;
+  onUploadSuccess: () => void
+  
 }
 
 const UploadReceiptModal: React.FC<UploadReceiptModalProps> = ({ isOpen, onClose, purchasePaymentProofId }) => {
