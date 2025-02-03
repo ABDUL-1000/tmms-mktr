@@ -60,7 +60,7 @@ const SignUpForm = () => {
         localStorage.setItem("signupFormData", JSON.stringify(safeFormData)); // Store marketer details
   
         setSuccess(result.message || "Signup successful!");
-        setTimeout(() => router.push("/dashboard"), 2000); // Redirect after signup
+        setTimeout(() => router.push("/login"), 2000); // Redirect after signup
       } else {
         setError("Signup failed. Please try again.");
       }
