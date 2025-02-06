@@ -1,49 +1,41 @@
-'use client';
-
+"use client";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Purchase } from "@/auth/types/purchaseTypes";
-
-// export interface Purchase {
-//   id: string;
-//   name: string;
-//   refinery: {
-//     status: string;
-//     updated_at:string;
-//     purchase_type: string;
-//     description: string;
-//   };
-//   amountCostNGN: number;
-//   amountCostUSD: number;
-//   lastUpdated: string;
-//   status: string;
-//   price: string;
-//   query: string;
-//   updated_at: string;
-//   purchase_type: string;
-//   description: string;
-// }
-
-const purchaseDetailPage = () => {
-  const params = useParams()
-  const id = params.id // Note: Changed from 'query' to 'id'
-  console.log('purchase ID:', id);
+import AddProgramModal from "@/components/AddProgram";
 
 
-  const [purchase, setpurchase] = useState<Purchase | null>(null);
+interface Program {
+  id: number;
+  atc_number: string;
+  liters: number;
+  status: string;
+  comment?: string;
+  created_at: string;
+}
+
+const PurchaseDetailPage = () => {
+  const params = useParams();
+  const id = params.id;
+  console.log("Purchase ID:", id);
+
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [purchase, setPurchase] = useState<Purchase | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!id) return; // Ensure `id` is available before making the API call
+    if (!id) return;
 
-    const fetchpurchase = async () => {
+    const fetchPurchase = async () => {
       try {
         const response = await axios.get(
           `https://tms.sdssn.org/api/marketers/purchases/${id}`
         );
-        setpurchase(response.data); // Update the purchase state with fetched data
+        setPurchase(response.data);
+        setPrograms(response.data.data.programs);
       } catch (err) {
         setError("Failed to fetch purchase details.");
       } finally {
@@ -51,43 +43,102 @@ const purchaseDetailPage = () => {
       }
     };
 
-    fetchpurchase();
+    fetchPurchase();
   }, [id]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  const refreshPrograms = async () => {
+    if (!id) return;
+    try {
+      const response = await axios.get(
+        `https://tms.sdssn.org/api/marketers/purchases/${id}`
+      );
+      setPrograms(response.data.data.programs);
+    } catch (err) {
+      console.error("Error refreshing programs:", err);
+    }
+  };
 
-  if (error) {
-    return <p>{error}</p>;
-  }
-
-  if (!purchase) {
-    return <p>purchase not found.</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!purchase) return <p>Purchase not found.</p>;
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
-  <h2 className="text-3xl font-bold text-gray-800 mb-4 capitalize">
-    {purchase.data.product.product_type.name}
-  </h2>
-  <div className="text-gray-600 space-y-3">
-    <p className="text-lg">
-      <span className="font-medium text-gray-800">Amount (NGN):</span> {purchase.data.amount}</p>
-    
-    <p>Liters: {purchase.data.liters}</p>
-  
-    <p>
-              Purchased At:{" "}
-              {new Date(purchase.data.created_at).toLocaleString()}
-            </p>
-  </div>
-  <button className="mt-6 w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all">
-    Edit purchase
-  </button>
-</div>
+    <div>
+      <section className="p-6 max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
+        <h2 className="text-3xl text-center font-bold text-gray-800 mb-4 capitalize">
+          {purchase.data.product.product_type.name}
+        </h2>
 
+        <div className="grid grid-cols-2 gap-y-3 items-center text-gray-600">
+          <span className="font-medium text-gray-800">Amount (NGN):</span>
+          <span>{purchase.data.amount}</span>
+          <span className="font-medium text-gray-800">PFI Number:</span>
+          <span>{purchase.data.pfi_number}</span>
+          <span className="font-medium text-gray-800">Status:</span>
+          <span>{purchase.data.status}</span>
+          <span className="font-medium text-gray-800">Liters:</span>
+          <span>{purchase.data.liters}</span>
+          <span className="font-medium text-gray-800">Purchased At:</span>
+          <span>{new Date(purchase.data.created_at).toLocaleString()}</span>
+        </div>
+
+        <button className="mt-6 w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all">
+          Edit Purchase
+        </button>
+      </section>
+
+      <div className="flex justify-end m-4">
+        <button
+          className="flex justify-center text-blue-400 rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-800"
+          onClick={() => setIsModalOpen(true)}
+        >
+          ➕ Add Program
+        </button>
+      </div>
+
+      <section className="m-3">
+        <h3 className="text-xl font-bold mt-6">Programs</h3>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="p-3 text-left">ID</th>
+                <th className="p-3 text-left">ATC Number</th>
+                <th className="p-3 text-left">Liters</th>
+                <th className="p-3 text-left">Status</th>
+                <th className="p-3 text-left">Comment</th>
+                <th className="p-3 text-left">Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {programs.length > 0 ? (
+                programs.map((program: Program) => (
+                  <tr key={program.id} className="border-b hover:bg-gray-100">
+                    <td className="p-3">{program.id}</td>
+                    <td className="p-3">{program.atc_number}</td>
+                    <td className="p-3">{program.liters.toLocaleString()}</td>
+                    <td className="p-3">{program.status}</td>
+                    <td className="p-3">{program.comment || "N/A"}</td>
+                    <td className="p-3">
+                      {new Date(program.created_at).toLocaleString()}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="p-4 text-center text-gray-500">
+                    Programs not available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <AddProgramModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}  purchaseId={Number(id) || null} refreshPrograms={refreshPrograms} />
+    </div>
   );
 };
 
-export default purchaseDetailPage;
+export default PurchaseDetailPage;

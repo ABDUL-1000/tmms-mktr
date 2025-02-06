@@ -35,7 +35,7 @@ const Sidebar = () => {
               className="flex py-2 px-3 rounded hover:bg-gray-100"
             >
               <FaShoppingCart className="mr-2 w-6 h-6"/>
-              Purchase (ATC)
+              Purchase (PTF)
             </Link>
           </li>
           <li>
@@ -47,11 +47,11 @@ const Sidebar = () => {
               Programs
             </Link>
             <Link
-              href="/uploaded-payed-purchase"
+              href="/transactions"
               className="flex py-2 px-3 rounded hover:bg-gray-100"
             >
               <FaFileUpload className="mr-4 w-5 h-5"/>
-              Uploaded Purchases
+              Transactions
             </Link>
           </li>
           <li>

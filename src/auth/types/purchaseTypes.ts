@@ -8,6 +8,7 @@ export interface Purchase {
   status: string;
   created_at: string;
   data: { liters: number;
+    pfi_number: string;
     status: string;
     created_at: string;
     amount: number;

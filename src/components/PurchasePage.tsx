@@ -7,6 +7,7 @@ import EditPurchaseModal from "./PurchaseEdit";
 import UploadReceiptModal from "./UploadReciept";
 import ViewPurchaseModal from "@/lib/purchaseView";
 import toast, { Toaster } from "react-hot-toast"; // Import toast and Toaster
+import Link from "next/link";
 
 interface Purchase {
   id: number;
@@ -16,9 +17,15 @@ interface Purchase {
   amount: number;
   status: string;
   created_at: string;
+  data: any;
+  product: any;
+  product_type: {
+    name: string;
+  }
 }
 
 const PurchasePage = () => {
+  
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [filteredPurchases, setFilteredPurchases] = useState<Purchase[]>([]);
@@ -55,18 +62,18 @@ const PurchasePage = () => {
   }, []);
 
   // Fetch details of a single purchase
-  const fetchPurchaseDetails = async (purchaseId: number) => {
-    try {
-      const { data } = await axios.get(
-        `https://tms.sdssn.org/api/marketers/purchases/${purchaseId}`,
-        { headers: { Accept: "application/json" } }
-      );
-      setViewedPurchase(data);
-      setOpenViewModal(true);
-    } catch (error) {
-      console.error("Error fetching purchase details:", error);
-    }
-  };
+  // const fetchPurchaseDetails = async (purchaseId: number) => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       `https://tms.sdssn.org/api/marketers/purchases/${purchaseId}`,
+  //       { headers: { Accept: "application/json" } }
+  //     );
+  //     setViewedPurchase(data);
+  //     setOpenViewModal(true);
+  //   } catch (error) {
+  //     console.error("Error fetching purchase details:", error);
+  //   }
+  // };
 
   // Handle updating a purchase
   const handleUpdatePurchase = (updatedPurchase: Purchase) => {
@@ -168,7 +175,7 @@ const PurchasePage = () => {
             {filteredPurchases.map((purchase) => (
               <tr key={purchase.id} className="bg-white border-b hover:bg-gray-50">
                 <td className="px-4 py-2">{purchase.name}</td>
-                <td className="px-4 py-2">{purchase.refinery_name}</td>
+                <td className="px-4 py-2">{purchase.name}</td>
                 <td className="px-4 py-2">{purchase.liters}</td>
                 <td className="px-4 py-2">{purchase.amount}</td>
                 <td className="px-4 py-2">
@@ -205,17 +212,20 @@ const PurchasePage = () => {
                           </button>
                         </li>
                         <li>
+                          <Link href={`/purchase/${purchase.id}`}>
                           <button
                             className="block w-full px-4 py-2 hover:bg-gray-100"
                             onClick={() => {
-                              fetchPurchaseDetails(purchase.id);
+                              // fetchPurchaseDetails(purchase.id);
                               setActionDropdown(null);
+
                             }}
                           >
                             View Purchase
                           </button>
+                          </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <button
                             className="block w-full px-4 py-2 hover:bg-gray-100"
                             onClick={() => {
@@ -226,7 +236,7 @@ const PurchasePage = () => {
                           >
                             Edit Purchase
                           </button>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   )}
@@ -247,14 +257,14 @@ const PurchasePage = () => {
         )}
 
         {/* Edit Purchase Modal */}
-        {openEditModal && selectedEditPurchaseId && (
+        {/* {openEditModal && selectedEditPurchaseId && (
           <EditPurchaseModal
             isOpen={openEditModal}
             onClose={() => setOpenEditModal(false)}
             purchaseId={selectedEditPurchaseId}
             onUpdatePurchase={handleUpdatePurchase}
           />
-        )}
+        )} */}
 
         {/* View Purchase Modal */}
         {openViewModal && viewedPurchase && (

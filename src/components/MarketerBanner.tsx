@@ -21,7 +21,7 @@ const MarketerBanner = () => {
     <div className="bg-white shadow-md rounded-lg flex items-center p-4 w-full dark:bg-slate-800 dark:text-gray-100">
       {/* Icon Section */}
       <div className="md:p-2">
-        <FaTruck className="bg-[#0828b9] p-2 rounded-full md:text-2xl text-white" />
+        <FaTruck className="p-2 rounded-full md:text-2xl text-white" />
       </div>
 
       {/* Content Section */}
