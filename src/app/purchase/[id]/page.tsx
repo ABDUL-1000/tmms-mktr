@@ -4,6 +4,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Purchase } from "@/auth/types/purchaseTypes";
 import AddProgramModal from "@/components/AddProgram";
+import Link from "next/link";
+import { MoreVerticalIcon } from "lucide-react";
 
 
 interface Program {
@@ -24,6 +26,7 @@ const PurchaseDetailPage = () => {
   const [purchase, setPurchase] = useState<Purchase | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [actionOpen, setActionOpen] = useState<number | null>(null);;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -108,6 +111,7 @@ const PurchaseDetailPage = () => {
                 <th className="p-3 text-left">Status</th>
                 <th className="p-3 text-left">Comment</th>
                 <th className="p-3 text-left">Created At</th>
+                <th className="p-3 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -122,6 +126,36 @@ const PurchaseDetailPage = () => {
                     <td className="p-3">
                       {new Date(program.created_at).toLocaleString()}
                     </td>
+                    <td className="px-4 py-2 relative">
+                  <MoreVerticalIcon
+                    className="cursor-pointer"
+                    onClick={() => setActionOpen(actionOpen === program.id ? null : program.id)}
+                          />
+                  {actionOpen && (
+                    <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-10">
+                      <ul className="py-2 text-sm text-gray-700">
+                        <li>
+                          
+                        </li>
+                        <li>
+                          <Link href={`/programTruck/${program.id}`}>
+                          <button
+                            className="block w-full px-4 py-2 hover:bg-gray-100"
+                            onClick={()=>
+                              setActionOpen(null)
+                            }
+                          
+                          >
+                            View Program
+                            
+                          </button>
+                          </Link>
+                        </li>
+                       
+                      </ul>
+                    </div>
+                  )}
+                </td>
                   </tr>
                 ))
               ) : (
