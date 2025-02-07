@@ -6,6 +6,7 @@ export interface ProgramTruck {
     liters: number;
     amount: number;
     atc_number:number;
+  
     
     comment:string;
     status: string;
@@ -16,6 +17,7 @@ export interface ProgramTruck {
       status: string;
       created_at: string;
       amount: number;
+    
       
       id:number
       product: {

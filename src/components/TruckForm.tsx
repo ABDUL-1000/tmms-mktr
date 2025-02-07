@@ -13,12 +13,14 @@ interface TruckFormProps {
   name: string;
   model: string;
   truck_number: string;
+  quantity:number;
   
   data:{
-    driver:{
-      first_name: string;
-      last_name: string
-    }
+    
+  }
+  driver:{
+    first_name: string;
+    last_name: string
   }
 }
 
@@ -38,8 +40,18 @@ const TruckForm = ({ programId, closeModal }: TruckFormProps) => {
         const response = await axios.get("https://tms.sdssn.org/api/transporters/trucks", {
           headers: { Accept: "application/json" }
         });
-        setTrucks(response.data);
-        console.log("Trucks fetched successfully:", response.data);
+        setTrucks(response.data.data);
+        // respose.data
+        // respose.data.status
+        // respose.data.message
+        // respose.data.data
+
+
+        console.log("Trucks res fetched successfully:", response.data);
+        console.log("Trucks status fetched successfully:", response.data.status);
+        console.log("Trucks msg fetched successfully:", response.data.message);
+        console.log("Trucks data fetched successfully:", response.data.data);
+
       } catch (err) {
         console.error("Error fetching trucks:", err);
         setError("Failed to load trucks");
@@ -109,10 +121,10 @@ const TruckForm = ({ programId, closeModal }: TruckFormProps) => {
           >
              
            
-{trucks.map(truck => (
+{ trucks.map(truck => (
     console.log('calling map on trucks'),
   <option key={truck.id} value={truck.id}>
-    {truck.plate_number} - {truck.model}
+   🚛 {truck.name}- {truck.quantity}
   </option>
 ))}
 
@@ -122,7 +134,7 @@ const TruckForm = ({ programId, closeModal }: TruckFormProps) => {
           {selectedTruck && (
             <div className="mb-4">
               <p className="font-medium">Driver:</p>
-              <p className="text-gray-700">{selectedTruck.data.driver.first_name} {selectedTruck.data.driver.last_name}</p>
+              <p className="text-gray-700">{selectedTruck.driver.first_name} {selectedTruck.driver.last_name}</p>
             </div>
           )}
 
