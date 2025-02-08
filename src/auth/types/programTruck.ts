@@ -6,6 +6,8 @@ export interface ProgramTruck {
     liters: number;
     amount: number;
     atc_number:number;
+    truck_id: number;
+    refreshPrograms: () => void;
   
     
     comment:string;

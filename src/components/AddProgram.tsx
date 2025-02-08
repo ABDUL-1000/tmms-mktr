@@ -26,8 +26,8 @@ const AddProgramModal: React.FC<AddProgramProps> = ({ isOpen, onClose, purchaseI
             { liters, purchase_id: purchaseId },
             { headers: { "Content-Type": "application/json", Accept: "application/json" } });
             console.log(response.data, 'programs added')
-            refreshPrograms()
-            onClose()
+            refreshPrograms();
+            onClose();
 
     }catch (err) {
         setError("Failed to add program.");

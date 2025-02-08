@@ -1,7 +1,10 @@
 "use client"; // Ensure this is at the very top
 
 import { ProgramTruck, ProgramData } from "@/auth/types/programTruck";
+import Navigation from "@/components/Navbar";
+import Sidebar from "@/components/SideBar";
 import TruckForm from "@/components/TruckForm";
+
 import axios from "axios";
 import { MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
@@ -48,7 +51,13 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
 
   return (
     <div>
-      
+      <Navigation />
+      <div className="max-w-7xl mx-auto px-4 ">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 ">
+          <div className="hidden lg:block lg:col-span-3">
+          <Sidebar />
+          </div>
+          <div className="lg:col-span-9 min-h-screen">
       <section className="p-6 max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
         <h2 className="text-3xl text-center font-bold text-gray-800 mb-4 capitalize">
           {program.data.purchase.product.product_type.name}
@@ -68,14 +77,12 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
           <span>{new Date(program.data.created_at).toLocaleString()}</span>
         </div>
 
-        <button className="mt-6 w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all">
-          Edit Purchase
-        </button>
+       
       </section>
 
       <div className="flex justify-end m-4">
         <button
-          className="flex justify-center text-blue-400 rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-800"
+          className="flex justify-center  text-blue-400 rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-800"
           onClick={() => setIsModalOpen(true)}
         >
           ➕ Add Truck 🚚
@@ -90,10 +97,12 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
               <tr>
                 <th className="p-3 text-left">ID</th>
                 <th className="p-3 text-left">ATC Number</th>
-                <th className="p-3 text-left">Liters</th>
+                <th className="p-3 text-left">Liters Lifted</th>
                 <th className="p-3 text-left">Status</th>
-                <th className="p-3 text-left">Comment</th>
+                <th className="p-3 text-left">Truck_ID</th>
                 <th className="p-3 text-left">Created At</th>
+                <th className="p-3 text-left">Truck</th>
+             
                 <th className="p-3 text-left">Actions</th>
               </tr>
             </thead>
@@ -105,7 +114,8 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
                     <td className="p-3">{programTruck.atc_number}</td>
                     <td className="p-3">{programTruck.liters.toLocaleString()}</td>
                     <td className="p-3">{programTruck.status}</td>
-                    <td className="p-3">{programTruck.comment || "N/A"}</td>
+                    <td className="p-3">{programTruck.truck_id || "N/A"}</td>
+                    <td className="p-3">{programTruck.created_at || "N/A"}</td>
                     <td className="p-3">
                       {new Date(programTruck.created_at).toLocaleString()}
                     </td>
@@ -117,12 +127,12 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
                         }
                       />
                       {actionOpen === programTruck.id && (
-                        <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-10">
+                        <div className="absolute right-0  w-40 bg-white border rounded-lg shadow-lg z-10">
                           <ul className="py-2 text-sm text-gray-700">
                             <li>
-                              <Link href={`/programTruck/${programTruck.id}`}>
+                              <Link href={`/Truck/`}>
                                 <button
-                                  className="block w-full px-4 py-2 hover:bg-gray-100"
+                                  className="block w-full px-4 py-2   hover:bg-gray-100"
                                   onClick={() => setActionOpen(null)}
                                 >
                                   View Program
@@ -147,8 +157,11 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
         </div>
       </section>
       {isModalOpen && (
-        <TruckForm programId={programId} closeModal={() => setIsModalOpen(false)} />
+       <TruckForm programId={id ? Number(id) : 0} closeModal={() => setIsModalOpen(false)} />
       )}
+    </div>
+    </div>
+      </div>
     </div>
   );
 };
