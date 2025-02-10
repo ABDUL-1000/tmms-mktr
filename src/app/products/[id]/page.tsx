@@ -24,7 +24,7 @@ export interface Product {
   description: string;
 }
 
-const ProductDetailPage = () => {
+  const ProductDetailPage = () => {
   const params = useParams()
   const id = params.id // Note: Changed from 'query' to 'id'
   console.log('Product ID:', id);

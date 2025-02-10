@@ -6,6 +6,8 @@ import { Purchase } from "@/auth/types/purchaseTypes";
 import AddProgramModal from "@/components/AddProgram";
 import Link from "next/link";
 import { MoreVerticalIcon } from "lucide-react";
+import Navigation from "@/components/Navbar";
+import Sidebar from "@/components/SideBar";
 
 
 interface Program {
@@ -67,6 +69,13 @@ const PurchaseDetailPage = () => {
 
   return (
     <div>
+        <Navigation />
+      <div className="max-w-7xl mx-auto px-4 ">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 ">
+          <div className="hidden lg:block lg:col-span-3">
+            <Sidebar />
+          </div>
+          <div className="lg:col-span-9 min-h-screen">
       <section className="p-6 max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
         <h2 className="text-3xl text-center font-bold text-gray-800 mb-4 capitalize">
           {purchase.data.product.product_type.name}
@@ -171,6 +180,9 @@ const PurchaseDetailPage = () => {
       </section>
 
       <AddProgramModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}  purchaseId={Number(id) || null} refreshPrograms={refreshPrograms} />
+    </div>
+    </div>
+    </div>
     </div>
   );
 };

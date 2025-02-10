@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ProgramDetailPage = ({ programId }: { programId: number }) => {
+const ProgramDetailPage = () => {
   const params = useParams();
   const id = params?.id; // Ensure id is correctly accessed
 
@@ -175,6 +175,8 @@ const ProgramDetailPage = ({ programId }: { programId: number }) => {
             </section>
             {isModalOpen && (
               <TruckForm
+              
+              
                 programId={id ? Number(id) : 0}
                 closeModal={() => setIsModalOpen(false)}
               />

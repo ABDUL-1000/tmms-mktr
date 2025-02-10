@@ -7,10 +7,40 @@ export interface ProgramTruck {
     amount: number;
     atc_number:number;
     truck_id: number;
+    program_id: number;
+    customer_id: string;
+   
+    driver_status: string;
+    location: {
+      latitude: number;
+      longitude: number;
+    }[];
+
+	
+		
     refreshPrograms: () => void;
   
     
     comment:string;
+    truck: {
+      id: number;
+      quantity: number;
+      truck_number: string;
+     
+      name: string;
+      driver_location: string;
+  
+      driver: {
+        location: [
+          {
+            latitude: number;
+            longitude: number;
+          }
+        ]
+        first_name: string;
+        last_name: string;
+      };
+    }
     status: string;
     product_type: string;
     created_at: string;
@@ -32,9 +62,13 @@ export interface ProgramTruck {
 export interface ProgramData {
   amount: number;
   pfi_number: string;
+  
   status: string;
   liters: number;
+  driver_location: string;
+  first_name: string;
   created_at: string;
+ 
   data:string;
   purchase: {
     pfi_number: string;

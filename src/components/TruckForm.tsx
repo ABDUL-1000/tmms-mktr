@@ -13,6 +13,8 @@ interface Truck {
   name: string;
   model: string;
   truck_number: string;
+  programId: number;
+  closeModal: () => void;
   quantity: number;
 
   data: {};
@@ -40,7 +42,9 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
     if (!programId) return; // Ensure programId is present
     const fetchProgramId = async () => {
       try {
-        const response = await axios.get(`https://tms.sdssn.org/api/programs/${programId}`);
+        const response = await axios.get(
+          `https://tms.sdssn.org/api/programs/${programId}`
+        );
         setProgramDetails(response.data.data);
         console.log("Fetched Program Details:", response.data.data);
       } catch (err) {
@@ -91,16 +95,16 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
       alert("Please select a truck and enter liters.");
       return;
     }
-  
+
     const payload = {
       truck_id: selectedTruck.id,
       program_id: programId,
       liters: Number(liters),
     };
-  
+
     try {
       setLoading(true);
-  
+
       const response = await axios.post(
         "https://tms.sdssn.org/api/marketers/program-trucks",
         payload,
@@ -108,13 +112,13 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-  
+
       alert("Data submitted successfully!");
       console.log(response.data);
-  
+
       // Update the local state (UI) without refreshing
       setTrucks((prevTrucks) => [...prevTrucks, selectedTruck]);
-  
+
       closeModal();
     } catch (error) {
       console.error("Error submitting data:", error);
@@ -123,7 +127,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
       setLoading(false);
     }
   };
-  
+
   console.log("TruckForm rendered", liters);
 
   return (
@@ -134,12 +138,11 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
         {error && <p className="text-red-500 mb-2">{error}</p>}
 
         <form
-  onSubmit={(e) => {
-    e.preventDefault(); // Prevents default form submission
-    handleSubmit();
-  }}
->
-
+          onSubmit={(e) => {
+            // e.preventDefault(); // Prevents default form submission
+            handleSubmit();
+          }}
+        >
           {/* Select Truck */}
           <label className="block mb-2 font-medium">Select Truck:</label>
           <select
@@ -180,19 +183,18 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
           {/* Input Liters */}
           <label className="block mb-2 font-medium">Liters:</label>
           <input
-  type="number"
-  value={liters}
-  onChange={(e) => setLiters(e.target.value.replace(/\D/, ""))} // Removes non-numeric input
-  className="w-full border p-2 rounded mb-4"
-  placeholder="Enter liters"
-/>
+            type="number"
+            value={liters}
+            onChange={(e) => setLiters(e.target.value.replace(/\D/, ""))}
+            className="w-full border p-2 rounded mb-4"
+            placeholder="Enter liters"
+          />
 
           {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
             disabled={loading}
-           
           >
             {loading ? "Adding..." : "Add Truck"}
           </button>
