@@ -17,6 +17,7 @@
     "flowbite-react": "^0.10.2",
     "jspdf": "^2.5.2",
     "lucide-react": "^0.473.0",
+    "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^3.9.4",
     "next": "14.2.23",
     "ol": "^10.4.0",
