@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeModeScript } from "flowbite-react"
 import ProtectedRoute from "@/components/ProtectedRoute";
+import "mapbox-gl/dist/mapbox-gl.css";
+
 
 
 const geistSans = localFont({
