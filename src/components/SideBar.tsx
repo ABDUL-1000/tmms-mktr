@@ -1,6 +1,6 @@
 import { HomeIcon, TruckIcon } from "lucide-react";
 import Link from "next/link";
-import { FaAppStore, FaCogs, FaFileUpload, FaShoppingCart, FaSignOutAlt, FaTerminal, FaTint, FaUser, FaWalking } from "react-icons/fa";
+import { FaAppStore, FaCogs, FaFileUpload, FaShoppingCart, FaSignOutAlt, FaTerminal, FaTint, FaUser, FaUsers, FaWalking } from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 
 const Sidebar = () => {
@@ -68,7 +68,7 @@ const Sidebar = () => {
               href="/customers"
               className="flex py-2 px-3 rounded hover:bg-gray-100"
             >
-              <FaWalking  className="mr-2 w-5 h-5"/>
+              <FaUsers  className="mr-2 w-5 h-5"/>
              Customers
             </Link>
           </li>
