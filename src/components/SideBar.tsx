@@ -65,6 +65,15 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
+              href="/customers"
+              className="flex py-2 px-3 rounded hover:bg-gray-100"
+            >
+              <FaWalking  className="mr-2 w-5 h-5"/>
+             Customers
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/movement"
               className="flex py-2 px-3 rounded hover:bg-gray-100"
             >

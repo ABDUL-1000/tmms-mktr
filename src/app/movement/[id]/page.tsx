@@ -13,6 +13,7 @@ const MAPBOX_TOKEN = "pk.eyJ1Ijoic29mdG1hZ2ljIiwiYSI6ImNrMGJraGRnbjB2YXUzbnE4bm9
 const MapPage = () => {
   const { id } = useParams();
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [firstLocation, setFirstLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewState, setViewState] = useState({
@@ -32,12 +33,14 @@ const MapPage = () => {
         console.log("API response:", response.data);
 
         const truckData = response.data.data.truck;
-        const latestLocation = truckData.driver.locations[0];
+        const firsttLocation = truckData.driver.locations[truckData.driver.location[0]];
+        const latestLocation = truckData.driver.locations[truckData.driver.locations.length -1];
 
-        if (latestLocation) {
-          const lat = latestLocation.latitude / 1000000;
-          const lon = latestLocation.longitude / 1000000;
+        if ( firstLocation && latestLocation ) {
+          const lat = latestLocation.latitude ;
+          const lon = latestLocation.longitude;
 
+          // setLocation({ latitude: 11.9984805, longitude: 8.5588411 });
           setLocation({ latitude: lat, longitude: lon });
           setViewState({
             longitude: lon,
@@ -48,6 +51,7 @@ const MapPage = () => {
           setError("Location data not available.");
         }
 
+        console.log(latestLocation)
         // Set driver details
         setDriver({
           first_name: truckData.driver.first_name,
@@ -67,6 +71,7 @@ const MapPage = () => {
 
     fetchLocation();
   }, [id]);
+
 
   if (loading) return <Loader />;
   if (error) return <p className="text-red-500">{error}</p>;
