@@ -11,7 +11,7 @@ const ProductPage = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<"view" | "purchase">("view");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [liters, setLiters] = useState<number>(0);
+  const [liters, setLiters] = useState('');
   const [totalNaira, setTotalNaira] = useState<number>(0);
   const [totalUSD, setTotalUSD] = useState<number>(0);
   const [showNotification, setShowNotification] = useState<boolean>(false);
@@ -46,7 +46,7 @@ const ProductPage = () => {
   const handleModalOpen = (product: Product, type: "view" | "purchase") => {
     setSelectedProduct(product);
     setModalType(type);
-    setLiters(0);
+    setLiters("");
     setTotalNaira(0);
     setTotalUSD(0);
     setShowModal(true);
@@ -54,7 +54,7 @@ const ProductPage = () => {
 
   const handleLitersChange = (value: string) => {
     const liters = parseFloat(value) || 0;
-    setLiters(liters);
+    setLiters(liters.toString());
 
     if (selectedProduct) {
       const pricePerLiter = Number(selectedProduct.price);
@@ -64,7 +64,8 @@ const ProductPage = () => {
   };
 
   const handleConfirmPurchase = async () => {
-    if (!selectedProduct || liters <= 0) {
+    const litersValue = parseFloat(liters);
+    if (!selectedProduct || isNaN(litersValue) || litersValue <= 0) {
       alert("Please enter a valid number of liters.");
       return;
     }

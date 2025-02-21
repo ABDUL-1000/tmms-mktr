@@ -35,7 +35,7 @@ const Sidebar = () => {
               className="flex py-2 px-3 rounded hover:bg-gray-100"
             >
               <FaShoppingCart className="mr-2 w-6 h-6"/>
-              Purchase (PTF)
+              Purchase (PFI)
             </Link>
           </li>
           <li>

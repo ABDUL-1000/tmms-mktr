@@ -76,7 +76,7 @@ const PurchaseDetailPage = () => {
             <Sidebar />
           </div>
           <div className="lg:col-span-9 min-h-screen">
-      <section className="p-6 max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
+      <section className="p-2 w-full mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
         <h2 className="text-3xl text-center font-bold text-gray-800 mb-4 capitalize">
           {purchase.data.product.product_type.name}
         </h2>
@@ -90,6 +90,10 @@ const PurchaseDetailPage = () => {
           <span>{purchase.data.status}</span>
           <span className="font-medium text-gray-800">Liters:</span>
           <span>{purchase.data.liters}</span>
+          <span className="font-medium text-gray-800">Purchased At:</span>
+          <span>{new Date(purchase.data.created_at).toLocaleString()}</span>
+          <span className="font-medium text-gray-800">Purchased At:</span>
+          <span>{new Date(purchase.data.created_at).toLocaleString()}</span>
           <span className="font-medium text-gray-800">Purchased At:</span>
           <span>{new Date(purchase.data.created_at).toLocaleString()}</span>
         </div>
