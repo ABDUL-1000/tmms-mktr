@@ -79,7 +79,7 @@ const PurchaseDetailPage = () => {
           <div className="hidden lg:block lg:col-span-3">
             <Sidebar />
           </div>
-          <div className="lg:col-span-9 min-h-screen">
+          <div className="lg:col-span-9 min-h-screen p-2">
             <section className="p-2 w-full mx-auto bg-white rounded-2xl shadow-lg border border-gray-200">
               <h2 className="text-3xl text-center font-bold text-gray-800 mb-4 capitalize">
                 {purchase.data.product.product_type.name}
@@ -93,11 +93,11 @@ const PurchaseDetailPage = () => {
                 <span className="font-medium text-gray-800">Status:</span>
                 <span>{purchase.data.status}</span>
                 <span className="font-medium text-gray-800">Total Liters:</span>
-                <span>{totalLiters}</span>
+                <span className="text-green-700">{totalLiters}</span>
                 <span className="font-medium text-gray-800">Liters Lifted:</span>
-                <span>{litersLifted}</span>
+                <span className="text-yellow-500">{litersLifted}</span>
                 <span className="font-medium text-gray-800">Liters Remaining:</span>
-                <span>{litersRemaining}</span>
+                <span className="text-red-600">{litersRemaining}</span>
                 <span className="font-medium text-gray-800">Program Created At:</span>
                 <span>{new Date(purchase.data.created_at).toLocaleString()}</span>
                 <span className="font-medium text-gray-800">Purchased At:</span>
@@ -140,10 +140,10 @@ const PurchaseDetailPage = () => {
                       programs.map((program: Program) => (
                         <tr key={program.id} className="border-b hover:bg-gray-100">
                           <td className="p-3">{program.id}</td>
-                          <td className="p-3">{program.atc_number}</td>
+                          <td className="p-3 text-[0.8rem]">{program.status === "approved" ? program.atc_number : 'ATC NUMBER NOT AVAILABLE'}</td>
                           <td className="p-3">{program.liters.toLocaleString()}</td>
                           <td className="p-3">{program.status}</td>
-                          <td className="p-3">{program.comment || "N/A"}</td>
+                          <td className="p-3">{program.comment || "Not yet Approved"}</td>
                           <td className="p-3">
                             {new Date(program.created_at).toLocaleString()}
                           </td>
