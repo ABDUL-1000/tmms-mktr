@@ -130,7 +130,7 @@ const ProgramTrucksTable: React.FC = () => {
                 <th className="py-3 px-6 text-left">Truck ID</th>
                 <th className="py-3 px-6 text-left">Liters</th>
                 <th className="py-3 px-6 text-left">Status</th>
-                <th className="py-3 px-6 text-left">Customer Status</th>
+                <th className="py-3 px-6 text-left">Customer's Status</th>
                 <th className="py-3 px-6 text-left">Delivery Status</th>
                 <th className="py-3 px-6 text-left">Created At</th>
                 <th className="py-3 px-6 text-center">Actions</th>
