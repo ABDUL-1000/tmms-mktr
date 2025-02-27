@@ -99,30 +99,7 @@ const PurchasePaymentProofPage = () => {
   };
 
   // Handle adding a new program
-  const handleAddProgram = async (paymentId: string) => {
-    const programData = {
-      liters: 0,
-      purchase_id: paymentId,
-      status: "pending",
-    };
-
-    try {
-      const response = await axios.post(
-        "https://tms.sdssn.org/api/marketers/programs",
-        programData,
-        { headers: { "Content-Type": "application/json", Accept: "application/json" } }
-      );
-
-      if (response.status === 201) {
-        alert("New program added successfully!");
-        router.push("/programs");
-      }
-    } catch (error: any) {
-      console.error("Failed to add program:", error.response?.data || error.message);
-      alert(`Error: ${error.response?.data?.message || "Validation failed or program data is incorrect"}`);
-    }
-  };
-
+  
   if (loading) return <p>Loading payment proofs...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -175,14 +152,7 @@ const PurchasePaymentProofPage = () => {
                             View Purchase
                           </button>
                         </li>
-                        <li>
-                          <button
-                            className="block w-full px-4 py-2 hover:bg-gray-100"
-                            onClick={() => handleAddProgram(payment.id)}
-                          >
-                            Add Program
-                          </button>
-                        </li>
+                      
                       </ul>
                     </div>
                   )}

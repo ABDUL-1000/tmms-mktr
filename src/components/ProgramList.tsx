@@ -18,7 +18,7 @@ interface ProgramList
     pfi_number:string;
     liters:number;
     amount:number;
-    product_type:{
+    product:{
         name:string;
         price:number;
     }
@@ -55,34 +55,32 @@ const ProgramListTable: React.FC = () => {
           <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               <tr>
-                <th className="py-1 px-4 text-left">name</th>
-                <th className="py-1 px-4 text-left">ID</th>
-                <th className="py-1 px-4 text-left">Program ID</th>
-                <th className="py-1 px-4 text-left">Purchase ID</th>
-                <th className="py-1 px-4 text-left">Liters</th>
-                <th className="py-1 px-4 text-left">Status</th>
-                <th className="py-1 px-4 text-left">amount</th>
-                <th className="py-1 px-4 text-left">pfi_number</th>
-                <th className="py-1 px-4 text-left">Price</th>
-                <th className="py-1 px-4 text-left">Created At</th>
+               
+               
+                <th className="py-1 px-2 text-left">Program ID</th>
+                <th className="py-1 px-2 text-left">Purchase ID</th>
+                <th className="py-1 px-2 text-left">Liters</th>
+                <th className="py-1 px-2 text-left">Status</th>
+                <th className="py-1 px-2 text-left">amount</th>
+                <th className="py-1 px-2 text-left">pfi_number</th>
+                <th className="py-1 px-2 text-left">Price</th>
+                <th className="py-1 px-2 text-left">Created At</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
               {programLists.map((program) => (
                 <tr key={program.id} className="border-b border-gray-200 hover:bg-gray-100">
-                  <td className="py-3 px-6">{program?.purchase?.product_type?.name}</td>
-                  <td className="py-3 px-6">{program.id}</td>
-                  <td className="py-3 px-6">{program.purchase.id}</td>
-                  <td className="py-3 px-6">{program.liters}</td>
-                  <td className="py-3 px-6">
-                    <span className={`px-2 py-1 rounded text-white ${program.status === 'moving' ? 'bg-blue-500' : 'bg-gray-500'}`}>{program.status}</span>
-                  </td>
-                  <td className="py-3 px-6">
+                
+                  <td className="py-3 px-2">{program.id}</td>
+                  <td className="py-3 px-2">{program.purchase.id}</td>
+                  <td className="py-3 px-2">{program.liters}</td>
+                 
+                  <td className="py-3 px-2">
                     <span className={`px-2 py-1 rounded text-white ${program.status === 'pending' ? 'bg-yellow-500' : 'bg-green-500'}`}>{program.status}</span>
                   </td>
-                  <td className="py-3 px-6">
-                    <span className={`px-2 py-1 rounded text-white ${program.status === 'pending' ? 'bg-yellow-500' : 'bg-green-500'}`}>{program.status}</span>
-                  </td>
+                  <td className="py-3 px-6">#{program.purchase.amount}</td>
+                  <td className="py-3 px-1">{program.purchase.pfi_number}</td>
+                  <td className="py-3 px-1">{program.purchase.product.price}</td>
                   <td className="py-3 px-6">{new Date(program.created_at).toLocaleDateString()}</td>
                 </tr>
               ))}

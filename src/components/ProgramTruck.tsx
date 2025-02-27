@@ -131,7 +131,7 @@ const ProgramTrucksTable: React.FC = () => {
                 <th className="py-3 px-6 text-left">Liters</th>
                 <th className="py-3 px-6 text-left">Status</th>
                 <th className="py-3 px-6 text-left">Customer Status</th>
-                <th className="py-3 px-6 text-left">Driver Status</th>
+                <th className="py-3 px-6 text-left">Delivery Status</th>
                 <th className="py-3 px-6 text-left">Created At</th>
                 <th className="py-3 px-6 text-center">Actions</th>
               </tr>
@@ -144,7 +144,7 @@ const ProgramTrucksTable: React.FC = () => {
                   <td className="py-3 px-6">{truck.truck_id}</td>
                   <td className="py-3 px-6">{truck.liters}</td>
                   <td className="py-3 px-6">{truck.status}</td>
-                  <td className="py-3 px-6">{truck.customer_status}</td>
+                  <td className="py-3 px-6">{truck.customer_status === 'pending' ? 'Not Assigned' : 'Assigned'}</td>
                   <td className="py-3 px-6">{truck.driver_status}</td>
                   <td className="py-3 px-6">{new Date(truck.created_at).toLocaleDateString()}</td>
                   <td className="py-3 px-6 text-center">
