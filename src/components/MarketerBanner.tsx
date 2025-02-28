@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useState } from "react";
 
 // Define TypeScript types
@@ -22,51 +22,67 @@ const MarketerBanner: React.FC = () => {
     address: "No. 100 Street, City, Country", 
   });
 
-  const calculateTimeLeft = (): TimeLeft => {
-    const storedEndDate = localStorage.getItem("subscriptionEndDate");
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-    let targetDate: Date;
-    if (storedEndDate) {
-      targetDate = new Date(storedEndDate);
-    } else {
-      targetDate = new Date();
-      targetDate.setMonth(targetDate.getMonth() + 2);
-      localStorage.setItem("subscriptionEndDate", targetDate.toISOString());
-    }
+  useEffect(() => {
+    // Ensure this runs only in the client-side
+    if (typeof window !== "undefined") {
+      // Get stored subscription end date
+      let storedEndDate = localStorage.getItem("subscriptionEndDate");
+      let targetDate: Date;
 
-    const now = new Date();
-    const difference = targetDate.getTime() - now.getTime();
+      if (storedEndDate) {
+        targetDate = new Date(storedEndDate);
+      } else {
+        targetDate = new Date();
+        targetDate.setMonth(targetDate.getMonth() + 2);
+        localStorage.setItem("subscriptionEndDate", targetDate.toISOString());
+      }
 
-    if (difference > 0) {
-      return {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / (1000 * 60)) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+      const calculateTimeLeft = () => {
+        const now = new Date();
+        const difference = targetDate.getTime() - now.getTime();
+
+        if (difference > 0) {
+          return {
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / (1000 * 60)) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+          };
+        }
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       };
-    }
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-  };
 
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
+      // Set initial time left
+      setTimeLeft(calculateTimeLeft());
+
+      // Start countdown timer
+      const timer = setInterval(() => {
+        setTimeLeft(calculateTimeLeft());
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, []);
 
   useEffect(() => {
     // Fetch stored marketer details from localStorage
-    const storedData = localStorage.getItem("signupFormData");
-    if (storedData) {
-      try {
-        setMarketer(JSON.parse(storedData));
-      } catch (error) {
-        console.error("Error parsing marketer data:", error);
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("signupFormData");
+      if (storedData) {
+        try {
+          setMarketer(JSON.parse(storedData));
+        } catch (error) {
+          console.error("Error parsing marketer data:", error);
+        }
       }
     }
-
-    // Countdown Timer
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer);
   }, []);
 
   return (
