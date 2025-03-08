@@ -61,7 +61,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
         const response = await axios.get(
           "https://tms.sdssn.org/api/transporters/trucks",
           {
-            headers: { Accept: "application/json" },
+            headers: { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
           }
         );
         setTrucks(response.data.data);
@@ -107,9 +107,8 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
 
       const response = await axios.post(
         "https://tms.sdssn.org/api/marketers/program-trucks",
-        payload,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
 

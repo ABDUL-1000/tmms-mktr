@@ -30,7 +30,8 @@ const ProgramDetailPage = () => {
     const fetchProgram = async () => {
       try {
         const response = await axios.get(
-          `https://tms.sdssn.org/api/marketers/programs/${id}`
+          `https://tms.sdssn.org/api/marketers/programs/${id}`,
+          { headers: { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
         setProgram(response.data);
         setProgramTrucks(response.data.data.program_trucks || []);

@@ -5,6 +5,7 @@ import { MoreVertical } from "lucide-react";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { headers } from "next/headers";
 
 // Define program truck structure
 interface ProgramTruck {
@@ -40,7 +41,9 @@ const ProgramTrucksTable: React.FC = () => {
   useEffect(() => {
     const fetchProgramTrucks = async () => {
       try {
-        const response = await axios.get("https://tms.sdssn.org/api/marketers/program-trucks");
+        const response = await axios.get("https://tms.sdssn.org/api/marketers/program-trucks",  { headers:
+          { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+         });
         setProgramTrucks(response.data.data);
       } catch (err) {
         setError("Failed to fetch program trucks");
@@ -56,7 +59,9 @@ const ProgramTrucksTable: React.FC = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("https://tms.sdssn.org/api/marketers/customers");
+        const response = await axios.get("https://tms.sdssn.org/api/marketers/customers", { headers:
+          { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+         });
         setCustomers(response.data.data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -89,6 +94,7 @@ const ProgramTrucksTable: React.FC = () => {
     try {
       await axios.put(
         `https://tms.sdssn.org/api/marketers/program-trucks/${selectedTruck.id}`,
+        
         {
           truck_id: selectedTruck.truck_id,
           liters: selectedTruck.liters,
@@ -99,6 +105,7 @@ const ProgramTrucksTable: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -143,7 +150,17 @@ const ProgramTrucksTable: React.FC = () => {
                   <td className="py-3 px-6">{truck.program_id}</td>
                   <td className="py-3 px-6">{truck.truck_id}</td>
                   <td className="py-3 px-6">{truck.liters}</td>
-                  <td className="py-3 px-6">{truck.status}</td>
+                  <td className="py-3 px-6">  <span
+                    className={`px-3 py-1 text-white rounded-full text-xs font-semibold ${
+                      truck.status === "approve"
+                        ? "bg-green-500"
+                        : truck.status === "pending"
+                        ? "bg-yellow-500"
+                        : "bg-red-500"
+                    }`}
+                  >
+                    {truck.status}
+                  </span></td>
                   <td className="py-3 px-6">{truck.customer_status === 'pending' ? 'Not Assigned' : 'Assigned'}</td>
                   <td className="py-3 px-6">{truck.driver_status}</td>
                   <td className="py-3 px-6">{new Date(truck.created_at).toLocaleDateString()}</td>
