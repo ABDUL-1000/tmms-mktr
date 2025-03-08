@@ -50,12 +50,13 @@ const UploadReceiptModal: React.FC<UploadReceiptModalProps> = ({ isOpen, onClose
           headers: {
             'Content-Type': 'multipart/form-data',
             Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           },
         }
       );
       alert('Payment proof uploaded successfully.');
       onClose();
-      window.location.href = '/uploaded-payed-purchase'; // Redirect after success
+      // window.location.href = '/uploaded-payed-purchase'; // Redirect after success
     } catch (err) {
       console.error('Upload error:', err);
       setError('Failed to upload payment proof. Please try again.');

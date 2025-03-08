@@ -36,7 +36,9 @@ const PurchaseDetailPage = () => {
     const fetchPurchase = async () => {
       try {
         const response = await axios.get(
-          `https://tms.sdssn.org/api/marketers/purchases/${id}`
+          `https://tms.sdssn.org/api/marketers/purchases/${id}`,  { headers:
+            { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+           }
         );
         setPurchase(response.data);
         setPrograms(response.data.data.programs);
@@ -54,7 +56,9 @@ const PurchaseDetailPage = () => {
     if (!id) return;
     try {
       const response = await axios.get(
-        `https://tms.sdssn.org/api/marketers/purchases/${id}`
+        `https://tms.sdssn.org/api/marketers/purchases/${id}`,  { headers:
+          { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+         }
       );
       setPrograms(response.data.data.programs);
     } catch (err) {
@@ -120,9 +124,9 @@ const PurchaseDetailPage = () => {
               </div>
             )}
 
-            <section className="m-3">
-              <h3 className="text-xl font-bold mt-6">Programs</h3>
-              <div className="overflow-x-auto mt-4">
+            <section className="m-3 ">
+              <h3 className="text-xl font-bold mt-2">Programs</h3>
+              <div className="overflow-x-auto mt-2">
                 <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
                   <thead className="bg-gray-200">
                     <tr>
@@ -155,12 +159,12 @@ const PurchaseDetailPage = () => {
                               }
                             />
                             {actionOpen && (
-                              <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-10">
+                              <div className="absolute right-0 mt-[-1rem] w-40  bg-white border rounded-lg shadow-lg z-10">
                                 <ul className="py-2 text-sm text-gray-700">
                                   <li>
                                     <Link href={`/programTruck/${program.id}`}>
                                       <button
-                                        className="block w-full px-4 py-2 hover:bg-gray-100"
+                                        className="block w-full px-1 py-1 hover:bg-gray-100"
                                         onClick={() => setActionOpen(null)}
                                       >
                                         View Program

@@ -18,6 +18,7 @@ interface Purchase {
   status: string;
   created_at: string;
   data: any;
+  pfi_number: string;
   product: any;
   product_type: {
     name: string;
@@ -47,7 +48,9 @@ const PurchasePage = () => {
       try {
         const { data } = await axios.get(
           "https://tms.sdssn.org/api/marketers/purchases",
-          { headers: { Accept: "application/json" } }
+          { headers:
+             { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+            }
         );
         setPurchases(data.data);
         setFilteredPurchases(data.data);
@@ -163,8 +166,9 @@ const PurchasePage = () => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th className="px-4 py-2">Purchase</th>
-              <th className="px-4 py-2">Refinery</th>
+              <th className="px-4 py-2">PFI Number</th>
               <th className="px-4 py-2">Liters</th>
+              <th className="px-4 py-2">Price per Liter(NGN)</th>
               <th className="px-4 py-2">Amount (NGN)</th>
               <th className="px-4 py-2">Status</th>
               <th className="px-4 py-2">Purchased At</th>
@@ -174,9 +178,10 @@ const PurchasePage = () => {
           <tbody>
             {filteredPurchases.map((purchase) => (
               <tr key={purchase.id} className="bg-white border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{purchase.name}</td>
-                <td className="px-4 py-2">{purchase.name}</td>
+                <td className="px-4 py-2">{purchase.product.product_type.name}</td>
+                <td className="px-4 py-2">{purchase.pfi_number}</td>
                 <td className="px-4 py-2">{purchase.liters}</td>
+                <td className="px-4 py-2">{purchase.amount}</td>
                 <td className="px-4 py-2">{purchase.amount}</td>
                 <td className="px-4 py-2">
                   <span

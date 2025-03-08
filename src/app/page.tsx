@@ -1,14 +1,14 @@
 
 import MarketerBanner from "@/components/MarketerBanner";
 import StatisticalWidge from "@/components/StatisticalWidge";
-import { getAllProducts } from "@/lib/getAllProducts";
+
 import Sidebar from "@/components/SideBar";
 import Navigation from "@/components/Navbar";
 
 
 export default async function Home() {
  
-  const products = await getAllProducts();
+ 
   return (
    <div>
    <Navigation/>

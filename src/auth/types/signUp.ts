@@ -7,9 +7,11 @@ export interface SignupFormData {
     address: string;
     city: string;
     state: string;
+    
     country: string;
     license_number: string;
     license_details: string;
+   
   
     description: string;
   }
@@ -17,5 +19,7 @@ export interface SignupFormData {
   export interface ApiResponse {
     success: boolean;
     message: string;
+    token: string;
+   
  
   }

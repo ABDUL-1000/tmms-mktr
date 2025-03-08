@@ -1,6 +1,5 @@
-import { ApiResponse, SignupFormData } from '@/auth/types/signUp';
 import axios from 'axios';
-
+import { ApiResponse, SignupFormData } from '@/auth/types/signUp';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tms.sdssn.org/api';
 
@@ -12,6 +11,13 @@ export const signupMarketer = async (formData: SignupFormData): Promise<ApiRespo
         Accept: 'application/json',
       },
     });
+
+    // Extract the token from response data (adjust this based on API response format)
+    const token = response.data?.token;  
+
+    if (token) {
+      localStorage.setItem('authToken', token); // Store token in localStorage
+    }
 
     return response.data;
   } catch (error: any) {

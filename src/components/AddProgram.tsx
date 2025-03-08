@@ -23,8 +23,9 @@ const AddProgramModal: React.FC<AddProgramProps> = ({ isOpen, onClose, purchaseI
     setLoading(true);
     try{
         const response = await axios.post( "https://tms.sdssn.org/api/marketers/programs",
+          
             { liters, purchase_id: purchaseId },
-            { headers: { "Content-Type": "application/json", Accept: "application/json" } });
+            { headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}`} });
             console.log(response.data, 'programs added')
             refreshPrograms();
             onClose();

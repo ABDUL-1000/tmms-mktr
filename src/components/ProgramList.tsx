@@ -33,7 +33,12 @@ const ProgramListTable: React.FC = () => {
   useEffect(() => {
     const fetchProgramList = async () => {
       try {
-        const response = await axios.get('https://tms.sdssn.org/api/marketers/programs');
+        const response = await axios.get('https://tms.sdssn.org/api/marketers/programs',
+          { headers:
+            { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+           }
+        );
+        
         setProgramLists(response.data.data);
       } catch (err) {
         setError('Failed to fetch programs');

@@ -1,10 +1,12 @@
 'use client';
 import { useEffect, useState } from "react";
-import { getAllProducts, Product } from "@/lib/getAllProducts";
+import useFetchProducts, {  Product } from "@/lib/getAllProducts";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 const ProductPage = () => {
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,22 +28,37 @@ const ProductPage = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError("Unauthorized: No token provided");
+        setLoading(false);
+        return;
+      }
+  
       try {
-        const productData = await getAllProducts();
-        if (Array.isArray(productData)) {
-          setProducts(productData);
+        const response = await axios.get("https://tms.sdssn.org/api/marketers/products", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+  
+        console.log("API Response:", response.data.data); // Log response
+  
+        if (Array.isArray(response.data.data)) {
+          setProducts(response.data.data);
         } else {
-          setError("Unexpected data format.");
+          setError(`Unexpected data format: ${JSON.stringify(response.data)}`);
         }
       } catch (err) {
-        setError("Failed to fetch products.");
+        setError("Failed to fetch products. Please check your API or network connection.");
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
   }, []);
+  
+  
+  
 
   const handleModalOpen = (product: Product, type: "view" | "purchase") => {
     setSelectedProduct(product);
@@ -67,13 +84,15 @@ const ProductPage = () => {
     const litersValue = parseFloat(liters);
     if (!selectedProduct || isNaN(litersValue) || litersValue <= 0) {
       alert("Please enter a valid number of liters.");
+      
       return;
     }
 
     const options = {
+      
       method: "POST",
       url: "https://tms.sdssn.org/api/marketers/purchases",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: { "Content-Type": "application/json", Accept: "application/json",  Authorization: `Bearer ${token}` },
       data: { product_id: selectedProduct.id, liters },
     };
 
@@ -103,12 +122,10 @@ const ProductPage = () => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader/>;
   }
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+
 
   return (
     <div className="overflow-x-auto py-2">
