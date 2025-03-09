@@ -39,10 +39,11 @@ const ProgramTrucksTable: React.FC = () => {
 
   // Fetch program trucks
   useEffect(() => {
+    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
     const fetchProgramTrucks = async () => {
       try {
         const response = await axios.get("https://tms.sdssn.org/api/marketers/program-trucks",  { headers:
-          { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+          { Accept: "application/json", Authorization: `Bearer ${token}` } 
          });
         setProgramTrucks(response.data.data);
       } catch (err) {
@@ -57,10 +58,11 @@ const ProgramTrucksTable: React.FC = () => {
 
   // Fetch customers
   useEffect(() => {
+    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
     const fetchCustomers = async () => {
       try {
         const response = await axios.get("https://tms.sdssn.org/api/marketers/customers", { headers:
-          { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+          { Accept: "application/json", Authorization: `Bearer ${token}` } 
          });
         setCustomers(response.data.data);
       } catch (error) {

@@ -8,6 +8,7 @@ import UploadReceiptModal from "./UploadReciept";
 import ViewPurchaseModal from "@/lib/purchaseView";
 import toast, { Toaster } from "react-hot-toast"; // Import toast and Toaster
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 interface Purchase {
   id: number;
@@ -42,14 +43,16 @@ const PurchasePage = () => {
   const [openViewModal, setOpenViewModal] = useState<boolean>(false);
   const [viewedPurchase, setViewedPurchase] = useState<Purchase | null>(null);
 
+
   // Fetch all purchases
   useEffect(() => {
     const fetchPurchases = async () => {
+      const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
       try {
         const { data } = await axios.get(
           "https://tms.sdssn.org/api/marketers/purchases",
           { headers:
-             { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+             { Accept: "application/json", Authorization: token ? `Bearer ${token}` : "" } 
             }
         );
         setPurchases(data.data);

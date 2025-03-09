@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ChangeEvent } from "react";
+import { MdToken } from "react-icons/md";
 interface TruckFormProps {
   programId: number;
   closeModal: () => void;
@@ -36,6 +37,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [programDetails, setProgramDetails] = useState<Program | null>(null);
+  
 
   // Fetch program details
   useEffect(() => {
@@ -56,12 +58,13 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
 
   // Fetch trucks from API
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const fetchTrucks = async () => {
       try {
         const response = await axios.get(
           "https://tms.sdssn.org/api/transporters/trucks",
           {
-            headers: { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
+            headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
           }
         );
         setTrucks(response.data.data);

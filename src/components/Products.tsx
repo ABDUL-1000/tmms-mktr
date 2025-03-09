@@ -4,9 +4,10 @@ import useFetchProducts, {  Product } from "@/lib/getAllProducts";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
+import Cookies from "js-cookie";
 
 const ProductPage = () => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +20,9 @@ const ProductPage = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const router = useRouter();
 
+ 
+  
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -28,7 +32,10 @@ const ProductPage = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const token = localStorage.getItem('token');
+      
+       
+  
+      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
       if (!token) {
         setError("Unauthorized: No token provided");
         setLoading(false);
@@ -37,7 +44,10 @@ const ProductPage = () => {
   
       try {
         const response = await axios.get("https://tms.sdssn.org/api/marketers/products", {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 
+            Accept: "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
         });
   
         console.log("API Response:", response.data.data); // Log response
@@ -81,6 +91,7 @@ const ProductPage = () => {
   };
 
   const handleConfirmPurchase = async () => {
+    const token = Cookies.get('token');
     const litersValue = parseFloat(liters);
     if (!selectedProduct || isNaN(litersValue) || litersValue <= 0) {
       alert("Please enter a valid number of liters.");
@@ -100,7 +111,8 @@ const ProductPage = () => {
       const response = await axios.request(options);
       setShowNotification(true);
       setShowModal(false);
-      console.log(response.data);
+      console.log('token', token);
+      console.log(response.data.data);
       router.push(`/purchase?product=${selectedProduct.id}&liters=${liters}&total=${totalNaira}`);
     } catch (error) {
       console.error(error);

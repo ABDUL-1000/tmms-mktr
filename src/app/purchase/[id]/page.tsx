@@ -8,6 +8,7 @@ import Link from "next/link";
 import { MoreVerticalIcon } from "lucide-react";
 import Navigation from "@/components/Navbar";
 import Sidebar from "@/components/SideBar";
+import Loading from "../loading";
 
 interface Program {
   id: number;
@@ -31,13 +32,14 @@ const PurchaseDetailPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (!id) return;
 
     const fetchPurchase = async () => {
       try {
         const response = await axios.get(
           `https://tms.sdssn.org/api/marketers/purchases/${id}`,  { headers:
-            { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+            { Accept: "application/json", Authorization: `Bearer ${token}` } 
            }
         );
         setPurchase(response.data);
@@ -53,11 +55,12 @@ const PurchaseDetailPage = () => {
   }, [id]);
 
   const refreshPrograms = async () => {
+    const token = localStorage.getItem("token");
     if (!id) return;
     try {
       const response = await axios.get(
         `https://tms.sdssn.org/api/marketers/purchases/${id}`,  { headers:
-          { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+          { Accept: "application/json", Authorization: `Bearer ${token}` } 
          }
       );
       setPrograms(response.data.data.programs);
@@ -71,7 +74,7 @@ const PurchaseDetailPage = () => {
   const totalLiters = purchase?.data.liters || 0;
   const litersRemaining = totalLiters - litersLifted;
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><Loading/></p>;
   if (error) return <p>{error}</p>;
   if (!purchase) return <p>Purchase not found.</p>;
 

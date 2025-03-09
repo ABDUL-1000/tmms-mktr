@@ -25,13 +25,14 @@ const ProgramDetailPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!id) return;
 
     const fetchProgram = async () => {
       try {
         const response = await axios.get(
           `https://tms.sdssn.org/api/marketers/programs/${id}`,
-          { headers: { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } }
+          { headers: { Accept: "application/json", Authorization: `Bearer ${token}` } }
         );
         setProgram(response.data);
         setProgramTrucks(response.data.data.program_trucks || []);
