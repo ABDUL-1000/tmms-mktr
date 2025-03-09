@@ -47,7 +47,7 @@ const PurchasePage = () => {
   // Fetch all purchases
   useEffect(() => {
     const fetchPurchases = async () => {
-      const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
+      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
       try {
         const { data } = await axios.get(
           "https://tms.sdssn.org/api/marketers/purchases",

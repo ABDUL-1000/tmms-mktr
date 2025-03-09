@@ -91,7 +91,7 @@ const ProductPage = () => {
   };
 
   const handleConfirmPurchase = async () => {
-    const token = Cookies.get('token');
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const litersValue = parseFloat(liters);
     if (!selectedProduct || isNaN(litersValue) || litersValue <= 0) {
       alert("Please enter a valid number of liters.");
