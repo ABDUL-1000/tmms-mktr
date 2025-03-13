@@ -48,7 +48,7 @@ const ProgramDetailPage = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-  if (!program) return <p>Purchase not found.</p>;
+  if (!program) return <p>Progam not found.</p>;
 
   return (
     <div>

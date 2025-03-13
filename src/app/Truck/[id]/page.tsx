@@ -17,13 +17,16 @@ const TruckDetailPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   useEffect(() => {
     if (!id) return; // Ensure `id` is available before making the API call
 
     const fetchTruck = async () => {
       try {
         const response = await axios.get(
-          `https://tms.sdssn.org/api/marketers/program-trucks/${id}`
+          `https://tms.sdssn.org/api/marketers/program-trucks/${id}`,  {
+            headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+          }
         );
         console.log("API response:", response.data);
         setTruck(response.data.data);

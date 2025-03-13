@@ -39,7 +39,7 @@ const ProgramTrucksTable: React.FC = () => {
 
   // Fetch program trucks
   useEffect(() => {
-    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
+
     const fetchProgramTrucks = async () => {
       try {
         const response = await axios.get("https://tms.sdssn.org/api/marketers/program-trucks",  { headers:
@@ -55,10 +55,10 @@ const ProgramTrucksTable: React.FC = () => {
 
     fetchProgramTrucks();
   }, []);
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   // Fetch customers
   useEffect(() => {
-    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
     const fetchCustomers = async () => {
       try {
         const response = await axios.get("https://tms.sdssn.org/api/marketers/customers", { headers:
@@ -85,14 +85,14 @@ const ProgramTrucksTable: React.FC = () => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
-
+  
   // Update Program Truck API Call
   const updateProgramTruck = async () => {
     if (!selectedTruck || !selectedCustomer) {
       toast.error("Please select a customer and enter liters lifted.");
       return;
     }
-
+    
     try {
       await axios.put(
         `https://tms.sdssn.org/api/marketers/program-trucks/${selectedTruck.id}`,
@@ -107,11 +107,12 @@ const ProgramTrucksTable: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
+      
+      
       toast.success("Customer successfully added!");
       setModalIsOpen(false);
     } catch (error) {

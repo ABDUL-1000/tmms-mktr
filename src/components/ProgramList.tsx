@@ -29,13 +29,14 @@ const ProgramListTable: React.FC = () => {
   const [programLists, setProgramLists] = useState<ProgramList[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   useEffect(() => {
     const fetchProgramList = async () => {
       try {
         const response = await axios.get('https://tms.sdssn.org/api/marketers/programs',
           { headers:
-            { Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` } 
+            { Accept: "application/json", Authorization: `Bearer ${token}` } 
            }
         );
         

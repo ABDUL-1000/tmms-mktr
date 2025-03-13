@@ -14,6 +14,7 @@ const AddProgramModal: React.FC<AddProgramProps> = ({ isOpen, onClose, purchaseI
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     const handleAddProgram = async () => {
     if (liters < 0){
@@ -25,7 +26,7 @@ const AddProgramModal: React.FC<AddProgramProps> = ({ isOpen, onClose, purchaseI
         const response = await axios.post( "https://tms.sdssn.org/api/marketers/programs",
           
             { liters, purchase_id: purchaseId },
-            { headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}`} });
+            { headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}`} });
             console.log(response.data, 'programs added')
             refreshPrograms();
             onClose();

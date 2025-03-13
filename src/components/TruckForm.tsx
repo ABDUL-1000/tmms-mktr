@@ -45,7 +45,9 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
     const fetchProgramId = async () => {
       try {
         const response = await axios.get(
-          `https://tms.sdssn.org/api/programs/${programId}`
+          `https://tms.sdssn.org/api/programs/${programId}`,  {
+            headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+          }
         );
         setProgramDetails(response.data.data);
         console.log("Fetched Program Details:", response.data.data);
@@ -57,12 +59,12 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
   }, [programId]);
 
   // Fetch trucks from API
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   useEffect(() => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const fetchTrucks = async () => {
       try {
         const response = await axios.get(
-          "https://tms.sdssn.org/api/transporters/trucks",
+          "https://tms.sdssn.org/api/marketers/trucks",
           {
             headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
           }
@@ -111,7 +113,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
       const response = await axios.post(
         "https://tms.sdssn.org/api/marketers/program-trucks",
         {
-          headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `${token}` },
         }
       );
 
