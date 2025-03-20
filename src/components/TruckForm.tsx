@@ -38,9 +38,11 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
   const [error, setError] = useState("");
   const [programDetails, setProgramDetails] = useState<Program | null>(null);
   
+  
 
   // Fetch program details
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!programId) return; // Ensure programId is present
     const fetchProgramId = async () => {
       try {
@@ -59,8 +61,9 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
   }, [programId]);
 
   // Fetch trucks from API
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const fetchTrucks = async () => {
       try {
         const response = await axios.get(
@@ -96,7 +99,9 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    if (!selectedTruck || !liters || !programId) {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    console.log('token:',token);
+    if (!selectedTruck || !liters || !programId || !token) {
       alert("Please select a truck and enter liters.");
       return;
     }
@@ -104,6 +109,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
     const payload = {
       truck_id: selectedTruck.id,
       program_id: programId,
+      token:token,
       liters: Number(liters),
     };
 
@@ -111,10 +117,12 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
       setLoading(true);
 
       const response = await axios.post(
-        "https://tms.sdssn.org/api/marketers/program-trucks",
+        'https://tms.sdssn.org/api/marketers/program-trucks',
+        payload,
+     
         {
-          headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `${token}` },
-        }
+          headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}` },
+        }, 
       );
 
       alert("Data submitted successfully!");
@@ -143,8 +151,9 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
 
         <form
           onSubmit={(e) => {
-            // e.preventDefault(); // Prevents default form submission
+           
             handleSubmit();
+            console.log("Form submitted");
           }}
         >
           {/* Select Truck */}

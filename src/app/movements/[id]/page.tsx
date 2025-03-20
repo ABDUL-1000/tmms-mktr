@@ -152,9 +152,14 @@ const TruckDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const fetchTruckDetail = async () => {
       try {
-        const response = await axios.get(`https://tms.sdssn.org/api/marketers/movements/${id}`);
+        const response = await axios.get(`https://tms.sdssn.org/api/marketers/movements/${id}`, 
+          {
+            headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+          }
+        );
         console.log("Truck detail response:", response.data);
         setTruckDetail(response.data.data);
       } catch (err) {

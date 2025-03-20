@@ -38,9 +38,12 @@ const AllTrucksMapPage = () => {
   const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
+    const token = typeof window === "undefined" ? null : localStorage.getItem("token");
     const fetchAllTruckLocations = async () => {
       try {
-        const response = await axios.get("https://tms.sdssn.org/api/marketers/movements");
+        const response = await axios.get("https://tms.sdssn.org/api/marketers/movements", {
+          headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+        });
         console.log("API response:", response.data);
 
         if (!response.data || !response.data.data) {

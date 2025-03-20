@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { headers } from "next/headers";
+import Loader from "./Loader";
 
 // Define program truck structure
 interface ProgramTruck {
@@ -127,7 +128,7 @@ const ProgramTrucksTable: React.FC = () => {
 
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
 
-      {loading && <p className="text-center text-blue-500">Loading...</p>}
+      {loading && <p className="text-center text-blue-500"><Loader/></p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {!loading && !error && (

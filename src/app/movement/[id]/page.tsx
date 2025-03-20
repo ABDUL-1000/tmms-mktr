@@ -29,11 +29,14 @@ const MapPage = () => {
   const [driver, setDriver] = useState<{ first_name: string; truckName: string; phone: string; second_name: string; truckNumber: string } | null>(null);
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!id) return;
   
     const fetchLocation = async () => {
       try {
-        const response = await axios.get(`https://tms.sdssn.org/api/marketers/program-trucks/${id}`);
+        const response = await axios.get(`https://tms.sdssn.org/api/marketers/program-trucks/${id}`, {
+          headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+        });
   
         console.log("API response:", response.data);
   

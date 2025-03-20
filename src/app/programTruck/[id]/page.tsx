@@ -1,6 +1,7 @@
 "use client"; // Ensure this is at the very top
 
 import { ProgramTruck, ProgramData } from "@/auth/types/programTruck";
+import Loader from "@/components/Loader";
 import Navigation from "@/components/Navbar";
 import Sidebar from "@/components/SideBar";
 import TruckForm from "@/components/TruckForm";
@@ -46,7 +47,7 @@ const ProgramDetailPage = () => {
     fetchProgram();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><Loader/></p>;
   if (error) return <p>{error}</p>;
   if (!program) return <p>Progam not found.</p>;
 

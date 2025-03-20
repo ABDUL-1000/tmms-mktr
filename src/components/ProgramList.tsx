@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Loader from './Loader';
 
 interface ProgramList
  {
@@ -54,7 +55,7 @@ const ProgramListTable: React.FC = () => {
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">All Programs</h2>
-      {loading && <p className="text-center text-blue-500">Loading...</p>}
+      {loading && <p className="text-center text-blue-500"><Loader/></p>}
       {error && <p className="text-center text-red-500">{error}</p>}
       {!loading && !error && (
         <div className="overflow-x-auto">
