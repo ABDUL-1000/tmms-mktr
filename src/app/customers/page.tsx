@@ -25,20 +25,21 @@ const CustomersPage = () => {
   const [newCustomer, setNewCustomer] = useState({
     first_name: "",
     last_name: "",
-    other_name: "",
+   
     phone_number: "",
-    password: "",
+
     address: "",
     city: "",
     country: "",
     state: "",
-    password_confirmation: "",
+
   });
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const fetchCustomers = async (url = "https://tms.sdssn.org/api/marketers/customers") => {
     setLoading(true);
     try {
-      const response = await axios.get(url, { headers: { Accept: "application/json" } });
+      const response = await axios.get(url, { headers: { Accept: "application/json", Authorization: `Bearer ${token}` } });
       setCustomers(response.data.data);
       setPagination({
         current_page: response.data.metadata.current_page,
@@ -141,30 +142,15 @@ const CustomersPage = () => {
                 className="border p-2 w-full mb-1"
                 onChange={(e) => setNewCustomer({ ...newCustomer, last_name: e.target.value })}
               />
-              <input
-                type="text"
-                placeholder="Other Name"
-                className="border p-2 w-full mb-1"
-                onChange={(e) => setNewCustomer({ ...newCustomer, other_name: e.target.value })}
-              />
+     
               <input
                 type="text"
                 placeholder="Phone Number"
                 className="border p-2 w-full mb-1"
                 onChange={(e) => setNewCustomer({ ...newCustomer, phone_number: e.target.value })}
               />
-              <input
-                type="password"
-                placeholder="Password"
-                className="border p-2 w-full mb-1"
-                onChange={(e) => setNewCustomer({ ...newCustomer, password: e.target.value })}
-              />
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                className="border p-2 w-full mb-1"
-                onChange={(e) => setNewCustomer({ ...newCustomer, password_confirmation: e.target.value })}
-              />
+        
+           
               <input
                 type="text"
                 placeholder="Address"

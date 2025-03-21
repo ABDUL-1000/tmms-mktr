@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { headers } from "next/headers";
 import Loader from "./Loader";
+import { createCustomer } from "@/auth/types/customer";
 
 // Define program truck structure
 interface ProgramTruck {
@@ -37,6 +38,31 @@ const ProgramTrucksTable: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<string>("");
   const [litersLifted, setLitersLifted] = useState<string>("");
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
+   const [showModal, setShowModal] = useState(false);
+    const [newCustomer, setNewCustomer] = useState({
+      first_name: "",
+      last_name: "",
+     
+      phone_number: "",
+  
+      address: "",
+      city: "",
+      country: "",
+      state: "",
+  
+    });
+     const handleCreateCustomer = async () => {
+        try {
+          await createCustomer(newCustomer);
+          setShowModal(false);
+        
+          toast.success("Customer created successfully!"); // Toaster notification
+        } catch (err: any) {
+          console.error("Error response:", err.response?.data); // Log the error response
+          alert(err.response?.data?.message || "Error creating customer");
+        }
+      };
 
   // Fetch program trucks
   useEffect(() => {
@@ -114,7 +140,7 @@ const ProgramTrucksTable: React.FC = () => {
       );
       
       
-      toast.success("Customer successfully added!");
+      toast.success("Customer successfully Assigned!");
       setModalIsOpen(false);
     } catch (error) {
       console.error("Update failed:", error);
@@ -187,7 +213,7 @@ const ProgramTrucksTable: React.FC = () => {
         className="bg-white p-6 rounded-lg shadow-xl max-w-md mx-auto mt-20"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        <h2 className="text-xl font-bold mb-4">Edit Program Truck</h2>
+        <h2 className="text-xl font-bold mb-4">Assign customer</h2>
 
         <label className="block text-gray-700">Select Customer:</label>
         <select
@@ -212,13 +238,85 @@ const ProgramTrucksTable: React.FC = () => {
         />
 
         <div className="flex justify-end space-x-3">
-          <button onClick={closeModal} className="bg-gray-500 text-white px-4 py-2 rounded">
+          <button onClick={closeModal} className="bg-red-700 text-white px-4 py-2 rounded">
             Cancel
           </button>
-          <button onClick={updateProgramTruck} className="bg-blue-500 text-white px-4 py-2 rounded">
-            Update
+          <button onClick={()=>setShowModal(true)} className="bg-blue-500 text-white px-4 py-2 rounded">
+            create customer
+          </button>
+          <button onClick={updateProgramTruck} className="bg-green-600 text-white px-4 py-2 rounded">
+            Assign
           </button>
         </div>
+            {/* MODAL */}
+            {showModal && (
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+              <h2 className="text-xl font-bold mb-4">Create New Customer</h2>
+
+              <input
+                type="text"
+                placeholder="First Name"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, first_name: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, last_name: e.target.value })}
+              />
+        
+              <input
+                type="text"
+                placeholder="Phone Number"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, phone_number: e.target.value })}
+              />
+         
+          
+              <input
+                type="text"
+                placeholder="Address"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="State"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, state: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="City"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, city: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Country"
+                className="border p-2 w-full mb-1"
+                onChange={(e) => setNewCustomer({ ...newCustomer, country: e.target.value })}
+              />
+
+              <div className="flex justify-end">
+                <button
+                  className="mr-2 px-4 py-2 bg-gray-500 text-white rounded-md"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-green-600 text-white rounded-md"
+                  onClick={handleCreateCustomer}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
