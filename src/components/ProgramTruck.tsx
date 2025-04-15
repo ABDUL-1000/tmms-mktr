@@ -274,7 +274,6 @@ const ProgramTrucksTable: React.FC = () => {
                 onChange={(e) => setNewCustomer({ ...newCustomer, phone_number: e.target.value })}
               />
          
-          
               <input
                 type="text"
                 placeholder="Address"

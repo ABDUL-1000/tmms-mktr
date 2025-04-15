@@ -3,10 +3,36 @@ import Link from "next/link";
 import { FaSignOutAlt } from "react-icons/fa";
 import { Bell } from "lucide-react"; // Importing the bell icon
 import { useState } from "react";
+import { logout } from "@/lib/logout";
+import { Button } from "./ui/button";
+import axios from 'axios';
+import { useRouter } from "next/navigation";
+
+const token = typeof window === 'undefined' ? null : localStorage.getItem('token');
 
 const Navigation = () => {
-  const [notificationCount, setNotificationCount] = useState(3); // Example notification count
-
+  
+  const navigate = useRouter();
+  const [notificationCount, setNotificationCount] = useState(0);
+  const handleLogout = async () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  
+    if (!token) {
+      alert('No token found');
+      return;
+    }
+  
+    try {
+      await logout(token);
+      localStorage.removeItem('token');
+      alert('Logged out successfully');
+      navigate.push('/login'); 
+    } catch (error) {
+      console.error(error);
+      alert('Logout failed');
+    }
+  };
+  
   return (
     <nav className="sticky top-0 bg-background/95 border-b w-full h-16 z-50 backdrop-blur supports-[backdrop-filter]:bg-background/65">
       <div className="max-w-7xl mx-auto px-4">
@@ -36,10 +62,16 @@ const Navigation = () => {
             </div>
 
             {/* Logout Button */}
-            <Link href="/login" className="flex items-center py-2 px-3 text-left hover:bg-gray-100">
+              <button
+              onClick={handleLogout}
+              >
+            <Link href="" className="flex items-center py-2 px-3 text-left hover:bg-gray-100">
               <FaSignOutAlt className="mr-2 w-5 h-5" />
-              <span className="text-red-700">Logout</span>
+             
+              
+              <span className="text-red-700">Logout </span>
             </Link>
+            </button>
           </div>
         </div>
       </div>
