@@ -33,13 +33,14 @@ interface Program {
 const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
   const [trucks, setTrucks] = useState<Truck[]>([]);
   const [selectedTruck, setSelectedTruck] = useState<Truck | null>(null);
-  const [liters, setLiters] = useState("");
+
+  const [liters, setLiters] = useState<number>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [programDetails, setProgramDetails] = useState<Program | null>(null);
   
   
-
+const LitersQuantity = selectedTruck?.quantity || 0;
   // Fetch program details
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -109,8 +110,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
     const payload = {
       truck_id: selectedTruck.id,
       program_id: programId,
-      token:token,
-      liters: Number(liters),
+      liters: LitersQuantity,
     };
 
     try {
@@ -141,7 +141,9 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
   };
 
   console.log("TruckForm rendered", liters);
-
+ useEffect(()=>{
+  setLiters(selectedTruck?.quantity || 0);
+ }, [selectedTruck]);
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -151,7 +153,7 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
 
         <form
           onSubmit={(e) => {
-           
+           e.preventDefault();
             handleSubmit();
             console.log("Form submitted");
           }}
@@ -197,10 +199,10 @@ const TruckForm = ({ closeModal, programId }: TruckFormProps) => {
           <label className="block mb-2 font-medium">Liters:</label>
           <input
             type="number"
-            value={liters}
-            onChange={(e) => setLiters(e.target.value.replace(/\D/, ""))}
+            value={LitersQuantity}
+           onChange={(e) => setLiters(Number(e.target.value))}
             className="w-full border p-2 rounded mb-4"
-            placeholder="Enter liters"
+            readOnly
           />
 
           {/* Submit Button */}

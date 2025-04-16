@@ -100,7 +100,7 @@ const ProgramDetailPage = () => {
                   <thead className="bg-gray-200">
                     <tr>
                       <th className="p-3 text-left">ID</th>
-                      <th className="p-3 text-left">ATC Number</th>
+                      <th className="p-3 text-left">Drivers Status</th>
                       <th className="p-3 text-left">Liters Lifted</th>
                       <th className="p-3 text-left">Status</th>
                       <th className="p-3 text-left">Truck_ID</th>
@@ -118,7 +118,7 @@ const ProgramDetailPage = () => {
                           className="border-b hover:bg-gray-100"
                         >
                           <td className="p-3">{programTruck.id}</td>
-                          <td className="p-3">{programTruck.atc_number}</td>
+                          <td className="p-3">{programTruck.driver_status}</td>
                           <td className="p-3">
                             {programTruck.liters.toLocaleString()}
                           </td>
@@ -145,11 +145,11 @@ const ProgramDetailPage = () => {
                             />
                             {actionOpen === programTruck.id && (
                               <div className="absolute right-0  w-40 bg-white border rounded-lg shadow-lg z-10">
-                                <ul className="py-2 text-sm text-gray-700">
+                                <ul className="py-2 text-[0.5rem] text-gray-700">
                                   <li>
                                     <Link href={`/Truck/${programTruck.id}`}>
                                       <button
-                                        className="block w-full px-4 py-2 hover:bg-gray-100"
+                                        className="block w-full p  hover:bg-gray-100"
                                         onClick={() => setActionOpen(null)}
                                       >
                                         View ProgramTruck
