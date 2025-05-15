@@ -4,6 +4,7 @@ import StatisticalWidge from "@/components/StatisticalWidge";
 
 import Sidebar from "@/components/SideBar";
 import Navigation from "@/components/Navbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 
 export default async function Home() {
@@ -11,6 +12,7 @@ export default async function Home() {
  
   return (
    <div>
+    <ProtectedRoute>
    <Navigation/>
     <div className="max-w-7xl mx-auto px-4 ">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 ">
@@ -24,7 +26,7 @@ export default async function Home() {
             </div>
 
   
-    
+            </ProtectedRoute>
    </div>
   );
 }
